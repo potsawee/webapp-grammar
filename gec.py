@@ -1,9 +1,9 @@
 import sys
-
 seq2seq_repo = '/home/alta/BLTSpeaking/ged-pm574/local/seq2seq/'
 sys.path.insert(0, seq2seq_repo)
 
 import tensorflow as tf
+from spellchecker import SpellChecker
 from model import EncoderDecoder
 from helper import load_vocab, read_config
 
@@ -49,11 +49,19 @@ class GEC(object):
 
     def translate(self, sentence):
         sent_ids = []
+        spell = SpellChecker()
+
         for word in sentence.split():
             if word in self.src_word2id:
                 sent_ids.append(self.src_word2id[word])
             else:
-                sent_ids.append(self.src_word2id['<unk>'])
+                x = spell.correction(word)
+                if x in self.src_word2id:
+                    print("Spellcheck: {} => {}".format(word, x))
+                    sent_ids.append(self.src_word2id[x])
+                else:
+                    sent_ids.append(self.src_word2id['<unk>'])
+
 
         # add dot at the end
         sent_ids.append(self.src_word2id['.'])
