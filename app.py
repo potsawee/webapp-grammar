@@ -8,8 +8,9 @@ from controller import Controller
 
 # ------------ Web App ------------ #
 os.environ['CUDA_VISIBLE_DEVICES'] = '' # disable GPU
-path = '/home/alta/BLTSpeaking/ged-pm574/nmt-exp/lib/models/correction/scheduled'
-gec = GEC(path)
+path = '/home/alta/BLTSpeaking/ged-pm574/nmt-exp/lib/models/new-training2/total-c1'
+model_number = 11
+gec = GEC(path, model_number)
 controller = Controller()
 
 app = Flask(__name__)

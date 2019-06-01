@@ -12,20 +12,23 @@ class GEC(object):
     def __init__(self):
         pass
 
-    def __init__(self, path):
-        self.build_model(path)
+    def __init__(self, path, model_number):
+        self.build_model(path, model_number)
 
     def __del__(self):
         self.sess.close()
 
-    def build_model(self, path):
+    def build_model(self, path, model_number=None):
         print('building model...')
         # path e.g. '/home/alta/BLTSpeaking/ged-pm574/nmt-exp/lib/models/correction/scheduled'
         self.config_path = path + '/config.txt'
         self.config = read_config(self.config_path)
         self.config['model_path'] = path
 
-        self.model_number = self.config['num_epochs'] - 1
+        if model_number == None:
+            self.model_number = self.config['num_epochs'] - 1
+        else:
+            self.model_number = model_number
         self.save_path = self.config['model_path'] + '/model-' + str(self.model_number)
 
         self.vocab_paths = {'vocab_src': self.config['vocab_src'], 'vocab_tgt': self.config['vocab_tgt']}
